@@ -20,13 +20,13 @@ function App() {
     }
   };
 
-  const handleSignOut = async () =>{
+  const handleSignOut = async () => {
     try {
-    await Auth.signOut()
-    } catch(err) {
-      console.error('Error signing out user', err)
+      await Auth.signOut();
+    } catch (err) {
+      console.error("Error signing out user", err);
     }
-  }
+  };
 
   const onAuthEvent = ({ payload }) => {
     switch (payload.event) {
@@ -80,7 +80,7 @@ function App() {
     <Router>
       <React.Fragment>
         {/* NavBar */}
-        <NavBar user={user} handleSignOut={handleSignOut}/>
+        <NavBar user={user} handleSignOut={handleSignOut} />
 
         {/* Routes */}
         <div className="app-container" />
