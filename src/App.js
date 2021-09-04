@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { AmplifyTheme, Authenticator } from "aws-amplify-react";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import "./App.css";
+import HomePage from './pages/HomePage'
+import ProfilePage from './pages/ProfilePage'
+import MarketPage from './pages/MarketPage'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -61,7 +65,21 @@ function App() {
     },
   };
 
-  return !user ? <Authenticator theme={theme}/> : <div>App</div>;
+  return !user ? <Authenticator theme={theme}/> : (
+    <Router>
+      <React.Fragment>
+        {/* Routes */}
+        <div className="app-container"></div>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/profile" component={ProfilePage} />
+        <Route path="/markets/:marketId">
+          <MarketPage />
+        </Route>
+      </React.Fragment>
+    </Router>
+  )
 }
 
 export default App;
+
+// xjtjdgjaxlukupmdel@zqrni.com
