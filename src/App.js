@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { AmplifyTheme, Authenticator } from "aws-amplify-react";
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
-import HomePage from './pages/HomePage'
-import ProfilePage from './pages/ProfilePage'
-import MarketPage from './pages/MarketPage'
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import MarketPage from "./pages/MarketPage";
+import NavBar from "./components/Navbar";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,7 +20,15 @@ function App() {
     }
   };
 
-  const onAuthEvent = ( {payload} ) => {
+  const handleSignOut = async () =>{
+    try {
+    await Auth.signOut()
+    } catch(err) {
+      console.error('Error signing out user', err)
+    }
+  }
+
+  const onAuthEvent = ({ payload }) => {
     switch (payload.event) {
       case "signIn":
         console.log("signed in");
@@ -65,11 +74,16 @@ function App() {
     },
   };
 
-  return !user ? <Authenticator theme={theme}/> : (
+  return !user ? (
+    <Authenticator theme={theme} />
+  ) : (
     <Router>
       <React.Fragment>
+        {/* NavBar */}
+        <NavBar user={user} handleSignOut={handleSignOut}/>
+
         {/* Routes */}
-        <div className="app-container"></div>
+        <div className="app-container" />
         <Route exact path="/" component={HomePage} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/markets/:marketId">
@@ -77,7 +91,7 @@ function App() {
         </Route>
       </React.Fragment>
     </Router>
-  )
+  );
 }
 
 export default App;
